@@ -1,5 +1,5 @@
 // Simulando chamadas à API - Substitua pela sua URL real
-const API_URL = process.env.EXPO_PUBLIC_API_URL || "https://api.example.com";
+const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
 interface LoginCredentials {
   email: string;
@@ -25,6 +25,9 @@ export const loginUser = async (
   credentials: LoginCredentials,
 ): Promise<AuthResponse> => {
   try {
+    console.log("API_URL:", API_URL);
+    console.log("ENVIANDO:", credentials);
+
     const response = await fetch(`${API_URL}/api/auth/login`, {
       method: "POST",
       headers: {
@@ -34,7 +37,11 @@ export const loginUser = async (
       body: JSON.stringify(credentials),
     });
 
+    console.log("STATUS:", response.status);
+
     const data = await response.json();
+
+    console.log("DATA:", data);
 
     if (!response.ok) {
       return {
@@ -51,6 +58,8 @@ export const loginUser = async (
       user: data.user,
     };
   } catch (error) {
+    console.log("ERRO FETCH:", error);
+
     return {
       success: false,
       message: "Erro de conexão",
