@@ -91,15 +91,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       const response = await loginUser({ email, password });
 
-      if (response.success && response.token) {
+      if (response.success) {
         const userData = response.user || { id: "", email, name: "" };
 
         await Promise.all([
-          AsyncStorage.setItem("authToken", response.token),
           AsyncStorage.setItem("user", JSON.stringify(userData)),
         ]);
 
-        setToken(response.token);
         setUser(userData);
 
         return { success: true };

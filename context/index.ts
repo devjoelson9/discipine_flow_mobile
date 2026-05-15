@@ -8,3 +8,9 @@ export {
 } from "./auth";
 export type { AuthContextType, User } from "./auth";
 
+export {
+    SidebarProvider,
+    useSidebar
+} from "./sidebar";
+export type { SidebarContextType } from "./sidebar";
+

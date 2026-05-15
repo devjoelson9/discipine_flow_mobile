@@ -15,7 +15,7 @@ import {
 import { AuthCard } from "~/components/auth/AuthCard";
 import { ErrorAlert } from "~/components/auth/ErrorAlert";
 import { FormInput } from "~/components/auth/FormInput";
-import { loginUser } from "~/services/auth";
+import { useAuth } from "~/context/auth";
 
 interface LoginFormData {
   email: string;
@@ -30,6 +30,7 @@ interface FormErrors {
 
 export const LoginScreen: React.FC = () => {
   const router = useRouter();
+  const { login } = useAuth();
   const emailRef = useRef<TextInput>(null);
   const passwordRef = useRef<TextInput>(null);
 
@@ -78,24 +79,20 @@ export const LoginScreen: React.FC = () => {
     setErrors({});
 
     try {
-      const response = await loginUser({
-        email: formData.email.trim().toLowerCase(),
-        password: formData.password,
-      });
+      const result = await login(
+        formData.email.trim().toLowerCase(),
+        formData.password,
+      );
 
-      if (response.success) {
-        // Aqui você pode salvar o token e redirecionar
-        // await saveToken(response.token);
-        router.replace("/(auth)/login");
+      console.log("RESULT LOGIN:", result);
+
+      if (result.success) {
+        router.replace("/(app)/dashboard");
       } else {
         setErrors({
-          general: response.errors || [response.message],
+          general: [result.error || "Erro ao fazer login"],
         });
       }
-    } catch (error) {
-      setErrors({
-        general: ["Erro desconhecido ao fazer login"],
-      });
     } finally {
       setIsLoading(false);
     }
@@ -118,7 +115,6 @@ export const LoginScreen: React.FC = () => {
   return (
     <SafeAreaView className="flex-1 bg-slate-100">
       {/* Background Blobs */}
-      
 
       {/* Content */}
       <KeyboardAvoidingView
