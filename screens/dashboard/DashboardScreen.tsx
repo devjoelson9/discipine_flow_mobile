@@ -90,6 +90,7 @@ export const DashboardScreen: React.FC = () => {
   }
 
   return (
+<<<<<<< HEAD
     <>
       <OnboardingModal
         visible={showOnboarding}
@@ -219,3 +220,36 @@ export const DashboardScreen: React.FC = () => {
 };
 
 export default DashboardScreen;
+=======
+    <View
+      className="flex-1 bg-slate-50"
+      style={{ paddingTop: insets.top, paddingBottom: insets.bottom }}
+    >
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        className="flex-1"
+        contentContainerStyle={{ paddingHorizontal: 16, paddingVertical: 20 }}
+      >
+        {showOnboarding && (
+          <OnboardingModal onComplete={handleCompleteOnboarding} />
+        )}
+
+        <HeaderSection />
+
+        {stats && <StatsCards stats={stats} />}
+
+        {studyTotals && studyGoals && (
+          <TimerSection
+            studyTotals={studyTotals}
+            studyGoals={studyGoals}
+            timerState={timerState}
+            userShowsTimerWidget={user?.show_timer_widget ?? true}
+          />
+        )}
+
+        {weeklyResume && <WeeklySummarySection weeklyResume={weeklyResume} />}
+      </ScrollView>
+    </View>
+  );
+}
+>>>>>>> 6295c22 (feat: adiciona dashboard)
